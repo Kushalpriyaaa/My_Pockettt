@@ -14,6 +14,18 @@ const { connectDB, port, corsOrigin, deployedUrl } = require('./config');
 // Connect to database and start server
 const startServer = async () => {
   try {
+    // Debug configuration
+    console.log('🔧 Server Configuration:');
+    console.log(`   PORT: ${port} (type: ${typeof port})`);
+    console.log(`   NODE_ENV: ${process.env.NODE_ENV}`);
+    console.log(`   CORS_ORIGIN: ${corsOrigin}`);
+    console.log(`   DEPLOYED_URL: ${deployedUrl}`);
+    
+    // Validate port before using it
+    if (typeof port !== 'number' || port <= 0) {
+      throw new Error(`Invalid port configuration: ${port}. Port must be a positive number.`);
+    }
+    
     // Connect to database first
     await connectDB();
     
@@ -79,7 +91,7 @@ const startServer = async () => {
     });
 
     // Start server
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
       const serverUrl = process.env.NODE_ENV === 'production' ? deployedUrl : `http://localhost:${port}`;
       console.log(`✅ Server Started at ${serverUrl}`);
       console.log(`🔍 Health check: ${serverUrl}/health`);
@@ -89,6 +101,18 @@ const startServer = async () => {
       console.log(`   - GET/POST ${serverUrl}/api/transactions`);
       console.log(`   - GET/POST ${serverUrl}/api/expenses`);
       console.log(`   - GET/POST ${serverUrl}/api/investments`);
+    });
+
+    // Handle server errors
+    server.on('error', (error) => {
+      if (error.code === 'EACCES') {
+        console.error(`❌ Permission denied: Cannot bind to port ${port}. Try using a different port or run with appropriate permissions.`);
+      } else if (error.code === 'EADDRINUSE') {
+        console.error(`❌ Port ${port} is already in use. Please use a different port.`);
+      } else {
+        console.error(`❌ Server error:`, error);
+      }
+      process.exit(1);
     });
 
   } catch (error) {
