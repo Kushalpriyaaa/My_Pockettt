@@ -35,6 +35,12 @@ const startServer = async () => {
     }));
     app.use(express.json());
 
+    // Request logging middleware
+    app.use((req, res, next) => {
+      console.log(`${new Date().toISOString()} - ${req.method} ${req.url} - Origin: ${req.headers.origin}`);
+      next();
+    });
+
     // Routes with error handling
     try {
       app.use('/api/users', require('./routes/users'));
