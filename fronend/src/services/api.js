@@ -1,8 +1,8 @@
 // E-Finance API Service - Connects to Backend Server
 // Handles all API calls to the backend for transactions, expenses, and investments
 
-// Backend API base URL - using Vite environment variable or default to localhost
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+// Backend API base URL - using Vite environment variable or default to deployed URL
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://my-pockettt-backend.onrender.com/api';
 
 // Helper function to make API requests with error handling
 const apiRequest = async (url, options = {}) => {
@@ -137,7 +137,8 @@ export const deleteInvestment = async (investmentId) => {
 // Check if backend server is running
 export const checkServerHealth = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL.replace('/api', '')}/health`);
+    const healthUrl = API_BASE_URL.replace('/api', '') + '/health';
+    const response = await fetch(healthUrl);
     return await response.json();
   } catch (error) {
     console.error('Server health check failed:', error);

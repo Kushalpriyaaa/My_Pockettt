@@ -6,5 +6,6 @@ module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',
   mongoUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/efinance',
   jwtSecret: process.env.JWT_SECRET || 'your-secret-key',
-  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173'
+  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  deployedUrl: process.env.DEPLOYED_URL || 'http://localhost'
 };

@@ -1,7 +1,7 @@
 // Test script to verify backend API endpoints
 // Run this with: node test-api.js
 
-const API_BASE = 'http://localhost:4000/api';
+const API_BASE = 'https://my-pockettt-backend.onrender.com/api';
 
 async function testAPI() {
   console.log('🧪 Testing E-Finance Backend API');
@@ -36,7 +36,7 @@ async function testAPI() {
   try {
     // Test health endpoint
     console.log('\n1. Testing Health Endpoint...');
-    const healthResponse = await fetch('http://localhost:4000/health');
+    const healthResponse = await fetch('https://my-pockettt-backend.onrender.com/health');
     const healthData = await healthResponse.json();
     console.log('✅ Health Check:', healthData.status);
 

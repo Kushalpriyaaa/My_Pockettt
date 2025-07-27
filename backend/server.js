@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 // Import config after dotenv is loaded
-const { connectDB, port, corsOrigin } = require('./config');
+const { connectDB, port, corsOrigin, deployedUrl } = require('./config');
 
 // Connect to database and start server
 const startServer = async () => {
@@ -74,14 +74,15 @@ const startServer = async () => {
 
     // Start server
     app.listen(port, () => {
-      console.log(`✅ Server Started at http://localhost:${port}`);
-      console.log(`🔍 Health check: http://localhost:${port}/health`);
-      console.log(`🧪 Test endpoint: http://localhost:${port}/api/test`);
+      const serverUrl = process.env.NODE_ENV === 'production' ? deployedUrl : `http://localhost:${port}`;
+      console.log(`✅ Server Started at ${serverUrl}`);
+      console.log(`🔍 Health check: ${serverUrl}/health`);
+      console.log(`🧪 Test endpoint: ${serverUrl}/api/test`);
       console.log(`📊 Available routes:`);
-      console.log(`   - GET/POST http://localhost:${port}/api/users`);
-      console.log(`   - GET/POST http://localhost:${port}/api/transactions`);
-      console.log(`   - GET/POST http://localhost:${port}/api/expenses`);
-      console.log(`   - GET/POST http://localhost:${port}/api/investments`);
+      console.log(`   - GET/POST ${serverUrl}/api/users`);
+      console.log(`   - GET/POST ${serverUrl}/api/transactions`);
+      console.log(`   - GET/POST ${serverUrl}/api/expenses`);
+      console.log(`   - GET/POST ${serverUrl}/api/investments`);
     });
 
   } catch (error) {
